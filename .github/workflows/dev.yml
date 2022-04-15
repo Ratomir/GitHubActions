@@ -28,10 +28,10 @@ jobs:
         docker build . -t ${{ secrets.ACR }}.azurecr.io/backend:${{ github.sha }} -f ./GitHubActions/Dockerfile
         docker push ${{ secrets.ACR }}.azurecr.io/backend:${{ github.sha }}     
       
-#     - uses: azure/webapps-deploy@v2
-#       with:
-#         app-name: 'myapp'
-#         images: '${{ secrets.ACR }}.azurecr.io/myapp:${{ github.sha }}'
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: '${{ secrets.APP_NAME }}'
+        images: '${{ secrets.ACR }}.azurecr.io/backend:${{ github.sha }}'
     
     - name: Azure logout
       run: |
