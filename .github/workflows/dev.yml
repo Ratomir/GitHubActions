@@ -36,7 +36,7 @@ jobs:
       
     - uses: azure/webapps-deploy@v2
       with:
-        app-name: '${{ secrets.APP_NAME }}'
+        app-name: 'app-ui-dqs-dev'
         images: '${{ secrets.ACR }}.azurecr.io/backend:${{ github.sha }}'
     
     - name: Azure logout
