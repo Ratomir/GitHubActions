@@ -1,0 +1,38 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Container_Workflow_Dev
+
+jobs:
+  build-and-deploy:
+    environment: Dev
+    runs-on: ubuntu-latest
+    steps:
+    # checkout the repo
+    - name: 'Checkout GitHub Action' 
+      uses: actions/checkout@main
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+    - uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.ACR }}.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    - run: |
+        docker build . -t ${{ secrets.ACR }}.azurecr.io/backend:${{ github.sha }} -f ./GitHubActions/Dockerfile
+        docker push ${{ secrets.ACR }}.azurecr.io/backend:${{ github.sha }}     
+      
+#     - uses: azure/webapps-deploy@v2
+#       with:
+#         app-name: 'myapp'
+#         images: '${{ secrets.ACR }}.azurecr.io/myapp:${{ github.sha }}'
+    
+    - name: Azure logout
+      run: |
+        az logout
