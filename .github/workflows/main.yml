@@ -1,6 +1,6 @@
 on: [push]
 
-name: Linux_Container_Node_Workflow
+name: Container_Workflow_Dev
 
 jobs:
   build-and-deploy:
