@@ -34,32 +34,32 @@ jobs:
         docker build . -t ${{ secrets.ACR }}.azurecr.io/backend:${{ github.sha }} -f ./GitHubActions/Dockerfile
         docker push ${{ secrets.ACR }}.azurecr.io/backend:${{ github.sha }}  
         
-    - name: Set Web App ACR authentication
-      uses: Azure/appservice-settings@v1
-      with:
-       app-name: 'app-mail-dqs-dev'
-       app-settings-json: |
-         [
-             {
-                 "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
-                 "value": "${{ secrets.REGISTRY_PASSWORD }}",
-                 "slotSetting": false
-             },
-             {
-                 "name": "DOCKER_REGISTRY_SERVER_URL",
-                 "value": "https://${{ secrets.ACR }}.azurecr.io",
-                 "slotSetting": false
-             },
-             {
-                 "name": "DOCKER_REGISTRY_SERVER_USERNAME",
-                 "value": "${{ secrets.REGISTRY_USERNAME  }}",
-                 "slotSetting": false
-             }
-         ]
+#     - name: Set Web App ACR authentication
+#       uses: Azure/appservice-settings@v1
+#       with:
+#        app-name: 'app-mail-dqs-dev'
+#        app-settings-json: |
+#          [
+#              {
+#                  "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+#                  "value": "${{ secrets.REGISTRY_PASSWORD }}",
+#                  "slotSetting": false
+#              },
+#              {
+#                  "name": "DOCKER_REGISTRY_SERVER_URL",
+#                  "value": "https://${{ secrets.ACR }}.azurecr.io",
+#                  "slotSetting": false
+#              },
+#              {
+#                  "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+#                  "value": "${{ secrets.REGISTRY_USERNAME  }}",
+#                  "slotSetting": false
+#              }
+#          ]
       
     - uses: azure/webapps-deploy@v2
       with:
-        app-name: 'app-mail-dqs-dev'
+        app-name: 'app-ui-dqs-dev'
         images: '${{ secrets.ACR }}.azurecr.io/backend:${{ github.sha }}'
     
     - name: Azure logout
